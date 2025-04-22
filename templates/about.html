@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="about-hero py-5">
+    <div class="container">
+        <h1 class="text-center mb-4">About Zoe Auto Dealer</h1>
+        <div class="row">
+            <div class="col-lg-6">
+                <img src="{{ url_for('static', filename='images/about-showroom.jpg') }}" 
+                     class="img-fluid rounded" alt="Zoe Auto Dealer Showroom">
+            </div>
+            <div class="col-lg-6">
+                <h2>Welcome to Zoe Auto Dealer</h2>
+                <p>At Zoe Auto Dealer, we believe in providing our customers with more than just vehicles – we offer an experience built on trust, quality, and transparency. Before a vehicle ever makes it to our lot, we put it through a rigorous scanning process to ensure it meets the highest standards. From condition checks to road tests, we test and scan every detail to ensure that what you're driving off with is nothing short of perfect.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="mission-section py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Mission</h2>
+        <p class="text-center lead">Our mission is to provide you with a wide range of vehicles, each tested and certified for your peace of mind. We are committed to offering the best cars at affordable prices while providing flexible financing options to suit your needs. Whether you are buying a new or pre-owned vehicle, you can trust Zoe Auto Dealer for a transparent, hassle-free experience.</p>
+    </div>
+</section>
+
+<section class="why-choose py-5">
+    <div class="container">
+        <h2 class="text-center mb-5">Why Choose Zoe Auto Dealer?</h2>
+        <div class="row">
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h3>Thorough Testing</h3>
+                    <p>Every vehicle undergoes extensive testing, including condition checks, scanning, and road testing.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-hand-holding-usd"></i>
+                    </div>
+                    <h3>Flexible Financing</h3>
+                    <p>Pay 50% now and the remaining balance on monthly payments with terms up to 72 months.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Certified Vehicles</h3>
+                    <p>All vehicles are thoroughly inspected and certified to meet our high standards.</p>
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-3 mb-4">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-car"></i>
+                    </div>
+                    <h3>Wide Selection</h3>
+                    <p>From new models to reliable pre-owned cars, we offer options for every budget.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="values-section py-5 bg-dark text-white">
+    <div class="container">
+        <h2 class="text-center mb-5">Our Values</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <h3><i class="fas fa-gem me-2"></i> Integrity</h3>
+                <p>We operate with complete transparency and honesty, ensuring our customers know exactly what they are getting.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h3><i class="fas fa-star me-2"></i> Quality</h3>
+                <p>We focus on providing vehicles that meet rigorous standards for safety, performance, and reliability.</p>
+            </div>
+            <div class="col-md-4 mb-4">
+                <h3><i class="fas fa-heart me-2"></i> Customer Satisfaction</h3>
+                <p>Our goal is to provide a seamless experience from the moment you step into our dealership.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

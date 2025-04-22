@@ -1,0 +1,123 @@
+{% extends "base.html" %}
+
+{% block title %}Our Cars{% endblock %}
+
+{% block extra_css %}
+<style>
+    .hero-banner {
+        background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url("{{ url_for('static', filename='images/inventory-banner.jpg') }}");
+        background-size: cover;
+        background-position: center;
+        padding: 100px 0;
+        color: white;
+        text-align: center;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="hero-banner">
+    <h1 class="display-4">Our Cars</h1>
+    <p class="lead">Search through our range of vehicles for sale or rent</p>
+</section>
+
+<section class="inventory-section py-5">
+    <div class="container">
+        <form id="inventory-filter">
+            <div class="row g-3 align-items-end">
+                <div class="col-md-2">
+                    <label class="form-label">Make</label>
+                    <select class="form-select" name="make">
+                        <option value="">All Makes</option>
+                        {% for make in makes %}
+                        <option value="{{ make[0] }}" {% if request.args.get('make') == make[0] %}selected{% endif %}>{{ make[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Model</label>
+                    <select class="form-select" name="model">
+                        <option value="">All Models</option>
+                        {% for model in models %}
+                        <option value="{{ model[0] }}" {% if request.args.get('model') == model[0] %}selected{% endif %}>{{ model[0] }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Year</label>
+                    <select class="form-select" name="min_year">
+                        <option value="">Min Year</option>
+                        {% for year in range(2024, 1990, -1) %}
+                        <option value="{{ year }}" {% if request.args.get('min_year') == year|string %}selected{% endif %}>{{ year }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Condition</label>
+                    <select class="form-select" name="status">
+                        <option value="">All</option>
+                        <option value="New" {% if request.args.get('status') == 'New' %}selected{% endif %}>New</option>
+                        <option value="Used" {% if request.args.get('status') == 'Used' %}selected{% endif %}>Used</option>
+                        <option value="For Rent" {% if request.args.get('status') == 'For Rent' %}selected{% endif %}>For Rent</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <label class="form-label">Price</label>
+                    <select class="form-select" name="max_price">
+                        <option value="">All Prices</option>
+                        <option value="1000000" {% if request.args.get('max_price') == '1000000' %}selected{% endif %}>500,000 - 1,000,000</option>
+                        <option value="2000000" {% if request.args.get('max_price') == '2000000' %}selected{% endif %}>1,000,000 - 2,000,000</option>
+                        <option value="4000000" {% if request.args.get('max_price') == '4000000' %}selected{% endif %}>3,000,000 - 4,000,000</option>
+                        <option value="6000000" {% if request.args.get('max_price') == '6000000' %}selected{% endif %}>5,000,000 - 6,000,000</option>
+                        <option value="99999999" {% if request.args.get('max_price') == '99999999' %}selected{% endif %}>Max</option>
+                    </select>
+                </div>
+
+                <div class="col-md-2">
+                    <button type="submit" class="btn btn-primary w-100">Search</button>
+                </div>
+            </div>
+        </form>
+
+        <hr class="my-4">
+
+        <div class="inventory-grid mt-4">
+            {% if vehicles %}
+                <div class="row">
+                    {% for vehicle in vehicles %}
+                    <div class="col-lg-4 col-md-6 mb-4">
+                        <div class="vehicle-card border rounded shadow-sm">
+                            <div class="vehicle-image position-relative">
+                                <img src="{{ url_for('static', filename='images/vehicles/' + vehicle.image) }}" alt="{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}" class="img-fluid rounded-top">
+                                <span class="badge bg-info text-dark position-absolute top-0 end-0 m-2">{{ vehicle.status }}</span>
+                            </div>
+                            <div class="p-3">
+                                <h5 class="mb-1">{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h5>
+                                <p class="text-muted mb-2">{{ vehicle.body_type }} | {{ vehicle.fuel_efficiency }} MPG</p>
+                                <h6 class="text-success">ETB {{ "{:,.0f}".format(vehicle.price) }}</h6>
+                                <p><i class="fas fa-tachometer-alt"></i> {{ "{:,.0f}".format(vehicle.mileage) }} km</p>
+                                <div class="d-flex justify-content-between">
+                                    <a href="{{ url_for('vehicle_details', vehicle_id=vehicle.id) }}" class="btn btn-outline-primary btn-sm">Details</a>
+                                    <button class="btn btn-outline-success btn-sm" data-bs-toggle="modal" data-bs-target="#financeModal" data-vehicle-price="{{ vehicle.price }}">Finance</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center py-5">
+                    <h4>No cars found for your selection.</h4>
+                    <p>Try changing your filters or <a href="{{ url_for('inventory') }}">reset search</a>.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</section>
+
+<!-- Finance Modal stays unchanged -->
+{% endblock %}

@@ -1,0 +1,284 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<style>
+    .vehicle-gallery {
+        margin-bottom: 30px;
+        position: relative;
+    }
+    .main-image {
+        height: 400px;
+        object-fit: contain;
+        margin-bottom: 15px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+    }
+    .thumbnail-container {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+    .thumbnail {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        cursor: pointer;
+        border: 2px solid transparent;
+        border-radius: 4px;
+        transition: all 0.3s ease;
+    }
+    .thumbnail:hover {
+        transform: scale(1.05);
+    }
+    .thumbnail.active {
+        border-color: var(--primary-color);
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+    .no-image-placeholder {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #e9ecef;
+        color: #6c757d;
+        font-size: 1.2rem;
+    }
+    .vehicle-badge {
+        display: inline-block;
+        padding: 5px 10px;
+        background-color: #28a745;
+        color: white;
+        border-radius: 4px;
+        font-weight: bold;
+        margin-bottom: 15px;
+    }
+    .specs-table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+    .specs-table tr:nth-child(even) {
+        background-color: #f9f9f9;
+    }
+    .specs-table td {
+        padding: 12px 15px;
+        border: 1px solid #ddd;
+    }
+    .specs-table td:first-child {
+        font-weight: bold;
+        width: 40%;
+    }
+    .vehicle-purchase-card {
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 8px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 20px;
+    }
+    .price-display {
+        font-size: 24px;
+        font-weight: bold;
+        margin-bottom: 20px;
+    }
+    .msrp {
+        text-decoration: line-through;
+        color: #888;
+        margin-left: 10px;
+        font-size: 16px;
+    }
+    .payment-estimator h4 {
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+    .result {
+        margin-top: 10px;
+        font-size: 16px;
+    }
+    .btn-lg {
+        font-size: 16px;
+        padding: 12px;
+    }
+    .image-counter {
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        background-color: rgba(0,0,0,0.7);
+        color: white;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 14px;
+    }
+    @media (max-width: 768px) {
+        .main-image {
+            height: 300px;
+        }
+        .thumbnail {
+            width: 60px;
+            height: 45px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<section class="vehicle-detail-section py-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-8">
+                <h1>{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h1>
+                <div class="vehicle-badge mb-3">{{ vehicle.status or "Available" }}</div>
+                
+                <div class="vehicle-gallery">
+                    {% if vehicle.image %}
+                        <img id="mainImage" src="{{ url_for('static', filename='images/vehicles/' + vehicle.image) }}" 
+                             class="main-image img-fluid w-100" 
+                             alt="{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}"
+                             loading="lazy">
+                        {% if vehicle.images %}
+                            <div class="image-counter">1/{{ vehicle.images|length + 1 }}</div>
+                        {% endif %}
+                    {% else %}
+                        <div class="main-image img-fluid w-100 no-image-placeholder">
+                            <span>No Image Available</span>
+                        </div>
+                    {% endif %}
+                    
+                    {% if vehicle.images %}
+                    <div class="thumbnail-container mt-3">
+                        {% if vehicle.image %}
+                            <img src="{{ url_for('static', filename='images/vehicles/car.jpg') }}" 
+                                 class="thumbnail active" 
+                                 onclick="changeImage(this, 0)"
+                                 alt="Main image"
+                                 loading="lazy">
+                        {% endif %}
+                        {% for img in vehicle.images %}
+                            <img src="{{ url_for('static', filename='images/vehicles/' + img.filename) }}" 
+                                 class="thumbnail {% if not vehicle.image and loop.first %}active{% endif %}" 
+                                 onclick="changeImage(this, {{ loop.index if vehicle.image else loop.index0 }})"
+                                 alt="Gallery image {{ loop.index }}"
+                                 loading="lazy">
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+                
+                <div class="vehicle-description mb-5">
+                    <h3>Vehicle Overview</h3>
+                    <p>{{ vehicle.description or "No description available." }}</p>
+                </div>
+            </div>
+            
+            <div class="col-lg-4">
+                <div class="vehicle-purchase-card">
+                    <div class="price-display">
+                        <span class="price">${{ "{:,.0f}".format(vehicle.price) }}</span>
+                        {% if vehicle.msrp and vehicle.msrp > vehicle.price %}
+                        <span class="msrp">MSRP ${{ "{:,.0f}".format(vehicle.msrp) }}</span>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="payment-estimator mb-4">
+                        <h4>Estimated Payment</h4>
+                        <div class="input-group mb-2">
+                            <span class="input-group-text">$</span>
+                            <input type="number" class="form-control" id="downPayment" placeholder="Down Payment" value="5000">
+                        </div>
+                        <select class="form-select mb-2" id="loanTerm">
+                            <option value="60,5.9">60 Months @ 5.9% APR</option>
+                            <option value="72,6.9">72 Months @ 6.9% APR</option>
+                        </select>
+                        <div class="result">
+                            <strong>Estimated Payment:</strong> 
+                            <span class="payment-amount" id="estimatedPayment">
+                                ${{ "{:,.2f}".format((vehicle.price - 5000) / 60 * 1.059) }}/mo
+                            </span>
+                        </div>
+                    </div>
+                    
+                    <button class="btn btn-primary btn-lg w-100 mb-2">
+                        <i class="fas fa-phone me-2"></i> Call Now
+                    </button>
+                    <button class="btn btn-outline-primary btn-lg w-100">
+                        <i class="fas fa-calendar me-2"></i> Schedule Test Drive
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row mt-5">
+            <div class="col-12">
+                <h3>Vehicle Specifications</h3>
+                <table class="specs-table">
+                    {% for spec in [
+                        ('Make/Model', vehicle.make ~ ' ' ~ vehicle.model),
+                        ('Year', vehicle.year),
+                        ('Price', '$' ~ "{:,.0f}".format(vehicle.price)),
+                        ('Mileage', "{:,.0f}".format(vehicle.mileage) ~ ' miles' if vehicle.mileage else 'N/A'),
+                        ('Body Style', vehicle.body_type),
+                        ('Exterior Color', vehicle.exterior_color),
+                        ('Interior Color', vehicle.interior_color),
+                        ('Engine', vehicle.engine),
+                        ('Transmission', vehicle.transmission),
+                        ('Drivetrain', vehicle.drivetrain),
+                        ('Fuel Type', vehicle.fuel_type),
+                        ('MPG', vehicle.fuel_efficiency ~ ' City/Hwy' if vehicle.fuel_efficiency else 'N/A'),
+                        ('VIN', vehicle.vin),
+                        ('Stock #', vehicle.stock_number)
+                    ] %}
+                        {% if spec[1] and spec[1] != 'N/A' %}
+                        <tr>
+                            <td>{{ spec[0] }}</td>
+                            <td>{{ spec[1] }}</td>
+                        </tr>
+                        {% endif %}
+                    {% endfor %}
+                </table>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function changeImage(element, index) {
+    // Update main image
+    document.getElementById('mainImage').src = element.src;
+    
+    // Update active thumbnail
+    document.querySelectorAll('.thumbnail').forEach(thumb => {
+        thumb.classList.remove('active');
+    });
+    element.classList.add('active');
+    
+    // Update image counter
+    const counter = document.querySelector('.image-counter');
+    if (counter) {
+        const totalImages = document.querySelectorAll('.thumbnail').length;
+        counter.textContent = `${index + 1}/${totalImages}`;
+    }
+}
+
+// Payment calculator
+document.addEventListener('DOMContentLoaded', function() {
+    const downPaymentInput = document.getElementById('downPayment');
+    const loanTermSelect = document.getElementById('loanTerm');
+    const price = {{ vehicle.price }};
+    
+    function calculatePayment() {
+        const downPayment = parseInt(downPaymentInput.value) || 0;
+        const [months, apr] = loanTermSelect.value.split(',').map(Number);
+        const principal = price - downPayment;
+        const monthlyRate = apr / 100 / 12;
+        const payment = principal * monthlyRate / (1 - Math.pow(1 + monthlyRate, -months));
+        
+        document.getElementById('estimatedPayment').textContent = 
+            '$' + payment.toLocaleString('en-US', {maximumFractionDigits: 2}) + '/mo';
+    }
+    
+    downPaymentInput.addEventListener('input', calculatePayment);
+    loanTermSelect.addEventListener('change', calculatePayment);
+});
+</script>
+{% endblock %}

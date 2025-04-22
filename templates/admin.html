@@ -1,0 +1,18 @@
+<!-- base.html -->
+{% extends 'admin/master.html' %}
+
+{% block body %}
+  <h1>Zoe Auto Dealer Admin</h1>
+  <div class="row">
+    <div class="col-md-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">Quick Stats</div>
+        <div class="panel-body">
+          <p>Vehicles: {{ Vehicle.query.count() }}</p>
+          <p>Contacts: {{ ContactRequest.query.count() }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <a href="{{ url_for('admin.logout') }}">Logout</a>
+{% endblock %}

@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zoe Car Dealership - {% block title %}{% endblock %}</title>
+    
+    <!-- FontAwesome & Bootstrap -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
+
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <!-- Header -->
+    <header class="main-header sticky-top">
+        <div class="container-fluid">
+            <div class="header-content d-flex justify-content-between align-items-center py-2">
+                <a href="{{ url_for('home') }}" class="brand-logo">
+                    <img src="{{ url_for('static', filename='images/logo.png') }}" alt="Zoe Car Dealership">
+                </a>
+
+                <nav class="main-nav">
+                    <ul class="nav-list d-flex gap-3">
+                        <li><a href="{{ url_for('home') }}">Home</a></li>
+                        <li class="dropdown">
+                            <a href="{{ url_for('inventory') }}">Inventory <i class="fas fa-chevron-down"></i></a>
+                            <div class="dropdown-menu">
+                                <a href="{{ url_for('inventory') }}?type=new">New Vehicles</a>
+                                <a href="{{ url_for('inventory') }}?type=used">Used Vehicles</a>
+                                <a href="{{ url_for('inventory') }}?type=certified">Certified Pre-Owned</a>
+                            </div>
+                        </li>
+                        <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                        <!-- Uncomment when pages are ready
+                        <li><a href="/financing">Financing</a></li>
+                        <li><a href="/trade-in">Trade-In</a></li>
+                        -->
+                    </ul>
+                </nav>
+
+                <div class="header-actions d-flex align-items-center gap-3">
+                    <div class="header-phone">
+                        <i class="fas fa-phone"></i> <span>+251-907082821</span>
+                    </div>
+                    <a href="{{ url_for('contact') }}" class="cta-button btn btn-primary">Get Pre-Approved</a>
+                </div>
+
+                <button class="mobile-menu-toggle btn">
+                    <i class="fas fa-bars"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="container my-4">
+        {% block content %}{% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="main-footer bg-dark text-white py-5">
+        <div class="container">
+            <div class="row footer-grid">
+                <div class="col-md-4 footer-column">
+                    <h3>Zoe Dealership</h3>
+                    <p>Your trusted partner for quality vehicles at competitive prices.</p>
+                    <div class="social-links d-flex gap-2">
+                        <a href="#"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                    </div>
+                </div>
+
+                <div class="col-md-4 footer-column">
+                    <h3>Quick Links</h3>
+                    <ul class="list-unstyled">
+                        <li><a href="{{ url_for('home') }}" class="text-white">Home</a></li>
+                        <li><a href="{{ url_for('inventory') }}" class="text-white">Inventory</a></li>
+                        <li><a href="/financing" class="text-white">Financing</a></li>
+                        <li><a href="/trade-in" class="text-white">Trade-In</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-md-4 footer-column">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-map-marker-alt"></i> 123 Auto Mall Dr, Your City</p>
+                    <p><i class="fas fa-phone"></i> (555) 123-4567</p>
+                    <p><i class="fas fa-envelope"></i> info@zoedealership.com</p>
+                </div>
+            </div>
+
+            <div class="footer-bottom text-center pt-3">
+                <p>&copy; 2025 Zoe Car Dealership. All Rights Reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/filters.js') }}"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

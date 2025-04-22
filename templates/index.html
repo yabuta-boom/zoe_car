@@ -1,0 +1,140 @@
+{% extends "base.html" %}
+
+{% block content %}
+<!-- Hero Banner Section -->
+<section class="hero-banner">
+    <div class="banner-container">
+        <img src="{{ url_for('static', filename='images/banner.jpg') }}" 
+             alt="Website Banner" 
+             class="banner-image">
+        <div class="banner-overlay"></div>
+        <div class="banner-text">
+          <h1>Quality Vehicles at Affordable Prices</h1>
+          <p>Browse our extensive inventory of new and pre-owned vehicles</p>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Vehicles Section -->
+<section class="featured-section index-featured-adjust">
+    <div class="container">
+        <h2 class="text-center" style="margin-bottom: 30px;">Featured Vehicles</h2>
+        <div class="row">
+            {% for vehicle in featured_vehicles %}
+            <div class="col-lg-4 col-md-6 mb-4">
+                <div class="vehicle-card">
+                    <div class="vehicle-badge">{{ vehicle.status }}</div>
+                    <div class="vehicle-image">
+                        <img src="{{ url_for('static', filename='images/vehicles/' + vehicle.image) }}" 
+                             alt="{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}">
+                        <div class="vehicle-overlay">
+                            <a href="{{ url_for('vehicle_details', vehicle_id=vehicle.id) }}" class="btn btn-outline-light">View Details</a>
+                        </div>
+                    </div>
+                    <div class="vehicle-details">
+                        <h3>{{ vehicle.year }} {{ vehicle.make }} {{ vehicle.model }}</h3>
+                        <div class="vehicle-price">${{ "{:,.0f}".format(vehicle.price) }}</div>
+                        <div class="vehicle-specs">
+                            <span><i class="fas fa-tachometer-alt"></i> {{ "{:,.0f}".format(vehicle.mileage) }} mi</span>
+                            <span><i class="fas fa-car"></i> {{ vehicle.body_type }}</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <div class="text-center mt-4">
+            <a href="/inventory" class="btn btn-primary" >View All Inventory</a>
+        </div>
+    </div>
+</section>
+
+<!-- New Vehicle Showcase Section -->
+<section class="vehicle-showcase-row">
+    <div class="container">
+        <div class="row">
+            <!-- Column 1 -->
+            <div class="col-md-3 mb-4">
+                <div class="vehicle-showcase-card">
+                    <img src="{{ url_for('static', filename='images/showcase1.jpg') }}" 
+                         alt="Luxury Sedan" 
+                         class="vehicle-showcase-img">
+                    <div class="vehicle-showcase-content">
+                        <h4>Premium Sedans</h4>
+                        <p>Experience unmatched comfort in our luxury sedan collection</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Column 2 (with hover effect) -->
+            <div class="col-md-3 mb-4 showcase-col-2">
+                <div class="vehicle-showcase-card">
+                    <img src="{{ url_for('static', filename='images/showcase2.jpg') }}" 
+                         alt="SUVs" 
+                         class="vehicle-showcase-img">
+                    <div class="showcase-hover-content">
+                        <h4>Family SUVs</h4>
+                        <p>Spacious and safe vehicles perfect for family adventures</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Column 3 -->
+            <div class="col-md-3 mb-4">
+                <div class="vehicle-showcase-card">
+                    <img src="{{ url_for('static', filename='images/showcase3.jpg') }}" 
+                         alt="Sports Cars" 
+                         class="vehicle-showcase-img">
+                    <div class="vehicle-showcase-content">
+                        <h4>Performance Cars</h4>
+                        <p>High-performance vehicles for the driving enthusiast</p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Column 4 -->
+            <div class="col-md-3 mb-4">
+                <div class="vehicle-showcase-card">
+                    <img src="{{ url_for('static', filename='images/showcase4.jpg') }}" 
+                         alt="Electric Vehicles" 
+                         class="vehicle-showcase-img">
+                    <div class="vehicle-showcase-content">
+                        <h4>Electric Vehicles</h4>
+                        <p>Eco-friendly options with cutting-edge technology</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Benefits Section -->
+<section class="benefits-section py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-4 mb-4">
+                <div class="benefit-card text-center">
+                    <i class="fas fa-car-crash"></i>
+                    <h3>Rigorous Inspection</h3>
+                    <p>Every vehicle undergoes 150+ point inspection before being listed</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="benefit-card text-center">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <h3>Flexible Financing</h3>
+                    <p>Pay 50% now and the rest in monthly installments up to 72 months</p>
+                </div>
+            </div>
+            <div class="col-lg-4 mb-4">
+                <div class="benefit-card text-center">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Warranty Options</h3>
+                    <p>Extended warranty available on all certified pre-owned vehicles</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

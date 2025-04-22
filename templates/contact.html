@@ -1,0 +1,132 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="contact-hero py-5">
+    <div class="container">
+        <h1 class="text-center mb-4">Contact Zoe Auto Dealer</h1>
+        <div class="row">
+            <!-- Contact Information -->
+            <div class="col-lg-6 mb-4">
+                <div class="contact-card bg-light p-4 rounded">
+                    <h2><i class="fas fa-map-marker-alt"></i> Visit Us</h2>
+                    <p>123 Auto Dealer Avenue<br>
+                    Addis Ababa, Ethiopia</p>
+                    
+                    <h2 class="mt-4"><i class="fas fa-phone"></i> Call Us</h2>
+                    <p>Primary: <a href="tel:+251907082821">+251 90 708 2821</a></p>
+                    <p>Secondary: <a href="tel:+251965595772">+251 96 559 5772</a></p>
+                    
+                    <h2 class="mt-4"><i class="fas fa-envelope"></i> Email Us</h2>
+                    <p><a href="mailto:yeabseramekbeb@gmail.com">yeabseramekbeb@gmail.com</a></p>
+                    
+                    <h2 class="mt-4"><i class="fas fa-clock"></i> Business Hours</h2>
+                    <p>Monday - Friday: 8:30 AM - 6:00 PM</p>
+                    <p>Saturday: 9:00 AM - 5:00 PM</p>
+                    <p>Sunday: Closed</p>
+                </div>
+            </div>
+            
+            <!-- Contact Form -->
+            <div class="col-lg-6 mb-4">
+                <div class="contact-form-card bg-white p-4 rounded shadow-sm">
+                    <h2 class="mb-4">Send Us a Message</h2>
+                    
+                    {# Flash Messages #}
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div class="alert alert-{{ category }} alert-dismissible fade show">
+                                    {{ message }}
+                                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" action="{{ url_for('contact') }}" novalidate>
+                        {{ form.hidden_tag() }} {# CSRF Token #}
+                        
+                        <!-- Name Field -->
+                        <div class="mb-3">
+                            {{ form.name.label(class="form-label") }}
+                            {{ form.name(class="form-control" + (" is-invalid" if form.name.errors else "")) }}
+                            {% for error in form.name.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Email Field -->
+                        <div class="mb-3">
+                            {{ form.email.label(class="form-label") }}
+                            {{ form.email(class="form-control" + (" is-invalid" if form.email.errors else "")) }}
+                            {% for error in form.email.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- Phone Field -->
+                        <div class="mb-3">
+                            {{ form.phone.label(class="form-label") }}
+                            {{ form.phone(class="form-control" + (" is-invalid" if form.phone.errors else "")) }}
+                            <small class="text-muted">Optional but recommended</small>
+                        </div>
+                        
+                        <!-- Interest Field -->
+                        <div class="mb-3">
+                            {{ form.interest.label(class="form-label") }}
+                            {{ form.interest(class="form-select") }}
+                        </div>
+                        
+                        <!-- Message Field -->
+                        <div class="mb-3">
+                            {{ form.message.label(class="form-label") }}
+                            {{ form.message(class="form-control" + (" is-invalid" if form.message.errors else ""), rows=4) }}
+                            {% for error in form.message.errors %}
+                                <div class="invalid-feedback">{{ error }}</div>
+                            {% endfor %}
+                        </div>
+                        
+                        <!-- reCAPTCHA -->
+                        <div class="mb-3">
+                            <div class="g-recaptcha" 
+                                 data-sitekey="{{ recaptcha_site_key }}"
+                                 data-callback="enableSubmitButton"
+                                 data-expired-callback="disableSubmitButton"
+                                 data-error-callback="disableSubmitButton"></div>
+                            {% if recaptcha_error %}
+                                <div class="text-danger small">Please complete the CAPTCHA verification</div>
+                            {% endif %}
+                        </div>
+                        
+                        <!-- Submit Button -->
+                        <button type="submit" id="submit-button" class="btn btn-primary w-100 py-2" disabled>
+                            <i class="fas fa-paper-plane me-2"></i> Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Map Section -->
+<section class="map-section">
+    <div class="container-fluid p-0">
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.923815294929!2d38.76395031478613!3d9.005981993547847!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b85f8829f07f5%3A0x187f1a1d5b1d1b1d!2sAddis%20Ababa%2C%20Ethiopia!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
+                width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+    </div>
+</section>
+{% endblock %}
+
+{% block scripts %}
+<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+<script>
+// Enable/disable submit button based on CAPTCHA status
+function enableSubmitButton() {
+    document.getElementById('submit-button').disabled = false;
+}
+function disableSubmitButton() {
+    document.getElementById('submit-button').disabled = true;
+}
+</script>
+{% endblock %}

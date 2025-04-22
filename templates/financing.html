@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block content %}
+<section class="financing-hero py-5">
+    <div class="container">
+        <h1 class="text-center mb-4">Auto Financing Options</h1>
+        <p class="lead text-center">We make financing easy with flexible options to fit your budget</p>
+    </div>
+</section>
+
+<section class="financing-options py-5 bg-light">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 mb-4">
+                <div class="option-card">
+                    <h2><i class="fas fa-university"></i> Bank Financing</h2>
+                    <p>We work with multiple banks to get you the best possible rates. Our relationships with local and national lenders help us secure competitive financing options.</p>
+                    <ul>
+                        <li>Competitive interest rates</li>
+                        <li>Terms from 12 to 84 months</li>
+                        <li>Quick approval process</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-lg-6 mb-4">
+                <div class="option-card">
+                    <h2><i class="fas fa-store"></i> In-House Financing</h2>
+                    <p>Our in-house financing options are perfect for buyers who need more flexible qualification requirements.</p>
+                    <ul>
+                        <li>Easier credit qualifications</li>
+                        <li>Flexible down payment options</li>
+                        <li>Personalized payment plans</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="calculator-section py-5">
+    <div class="container">
+        <h2 class="text-center mb-4">Payment Calculator</h2>
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="calculator-card">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label class="form-label">Vehicle Price ($)</label>
+                            <input type="number" class="form-control" id="vehiclePrice" value="25000">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Down Payment ($)</label>
+                            <input type="number" class="form-control" id="downPayment" value="5000">
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Loan Term (months)</label>
+                            <select class="form-select" id="loanTerm">
+                                <option value="36">36 months</option>
+                                <option value="48">48 months</option>
+                                <option value="60" selected>60 months</option>
+                                <option value="72">72 months</option>
+                                <option value="84">84 months</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label">Interest Rate (%)</label>
+                            <input type="number" class="form-control" id="interestRate" value="5.9" step="0.1">
+                        </div>
+                        <div class="col-12">
+                            <div class="result-box">
+                                <h4>Estimated Monthly Payment: <span id="monthlyPayment">$0</span></h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="requirements-section py-5 bg-dark text-white">
+    <div class="container">
+        <h2 class="text-center mb-4">What You'll Need</h2>
+        <div class="row">
+            <div class="col-md-4 mb-4">
+                <div class="requirement-card">
+                    <h3><i class="fas fa-id-card"></i> Identification</h3>
+                    <p>Valid driver's license or government-issued ID</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="requirement-card">
+                    <h3><i class="fas fa-file-invoice-dollar"></i> Proof of Income</h3>
+                    <p>Recent pay stubs or tax returns if self-employed</p>
+                </div>
+            </div>
+            <div class="col-md-4 mb-4">
+                <div class="requirement-card">
+                    <h3><i class="fas fa-home"></i> Proof of Residence</h3>
+                    <p>Utility bill or lease agreement</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="apply-section py-5">
+    <div class="container text-center">
+        <h2 class="mb-4">Ready to Get Started?</h2>
+        <p

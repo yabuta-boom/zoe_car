@@ -1,0 +1,27 @@
+<form method="POST" enctype="multipart/form-data">
+    <input type="text" name="make" placeholder="Make" required><br>
+    <input type="text" name="model" placeholder="Model" required><br>
+    <input type="number" name="year" placeholder="Year" required><br>
+    <input type="number" name="price" placeholder="Price" required><br>
+    <input type="number" name="mileage" placeholder="Mileage" required><br>
+    <textarea name="description" placeholder="Description"></textarea><br>
+    <input type="file" name="image" accept="image/*"><br><br>
+    <button type="submit">Add Vehicle</button>
+</form>
+
+{% if image_url %}
+<div>
+    <p>Image uploaded successfully!</p>
+    <img src="{{ image_url }}" alt="Uploaded Image" width="200">
+</div>
+{% endif %}
+
+<script>
+    function changeImage(element) {
+        document.getElementById('mainImage').src = element.src;
+        document.querySelectorAll('.thumbnail').forEach(thumb => {
+            thumb.classList.remove('active');
+        });
+        element.classList.add('active');
+    }
+</script>
